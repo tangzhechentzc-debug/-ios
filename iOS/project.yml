@@ -1,0 +1,74 @@
+name: ChangeLocation
+options:
+  bundleIdPrefix: com.tzchen
+  deploymentTarget:
+    iOS: "27.0"
+  xcodeVersion: "27.1"
+  createIntermediateGroups: true
+  developmentLanguage: zh-Hans
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "27.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    SUPPORTS_MACCATALYST: NO
+    SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+    CODE_SIGN_STYLE: Automatic
+    CURRENT_PROJECT_VERSION: 2
+    MARKETING_VERSION: 1.0.1
+targets:
+  ChangeLocationiOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+      - path: ../Sources/ChangeLocation/Models/Coordinates.swift
+      - path: Resources
+        optional: true
+      - path: Native/THIRD_PARTY_NOTICES.txt
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_NAME: ChangeLocation
+        PRODUCT_MODULE_NAME: ChangeLocationiOS
+        PRODUCT_BUNDLE_IDENTIFIER: com.tzchen.ChangeLocation
+        TARGETED_DEVICE_FAMILY: "1"
+        INFOPLIST_FILE: Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_OBJC_BRIDGING_HEADER: Native/include/ChangeLocationNative.h
+        HEADER_SEARCH_PATHS: "$(inherited) $(SRCROOT)/Native/include"
+        OTHER_LDFLAGS: "$(inherited) -lchangelocation -lresolv"
+        "LIBRARY_SEARCH_PATHS[sdk=iphoneos*]": "$(inherited) $(SRCROOT)/Native/lib/iphoneos"
+        "LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*]": "$(inherited) $(SRCROOT)/Native/lib/iphonesimulator"
+    dependencies:
+      - sdk: Security.framework
+      - sdk: SystemConfiguration.framework
+  ChangeLocationiOSTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests
+        optional: true
+    dependencies:
+      - target: ChangeLocationiOS
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tzchen.ChangeLocationTests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/ChangeLocation.app/ChangeLocation"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  ChangeLocationiOS:
+    build:
+      targets:
+        ChangeLocationiOS: all
+        ChangeLocationiOSTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - ChangeLocationiOSTests
+    archive:
+      config: Release

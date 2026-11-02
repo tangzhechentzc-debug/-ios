@@ -1,0 +1,13 @@
+.DS_Store
+.build/
+build/
+dist/
+iOS/Native/target/
+iOS/Native/lib/
+xcuserdata/
+*.xcuserstate
+*.mobileprovision
+*.p12
+*.p8
+.env
+.env.*
